@@ -1,0 +1,64 @@
+body {
+  padding-top: 70px;
+  padding-bottom: 30px;
+}
+
+.container {
+  width: 100%;
+}
+
+.col-full{
+  height: 850px;
+}
+
+.box-full{
+  height: 100%
+}
+
+.box-tab-full{
+  height: 100%
+}
+
+.box-tab-nav-full{
+  height: 90%
+}
+
+.box {
+  box-shadow: 0 1px 1px rgb(0, 0, 0) !important;
+}
+
+.nav-tabs-custom {
+    margin-bottom: 20px;
+    background: #fff;
+    box-shadow: 0 1px 1px rgb(0, 0, 0) !important;
+    border-radius: 3px;
+}
+
+
+.theme-dropdown .dropdown-menu {
+  position: static;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.theme-showcase > p > .btn {
+  margin: 5px 0;
+}
+
+.theme-showcase .navbar .container {
+  width: auto;
+}
+
+/* CSS REQUIRED */
+.state-icon {
+    left: -5px;
+}
+.list-group-item-primary {
+    color: rgb(255, 255, 255);
+    background-color: rgb(66, 139, 202);
+}
+
+/* DEMO ONLY - REMOVES UNWANTED MARGIN */
+.well .list-group {
+    margin-bottom: 0px;
+}

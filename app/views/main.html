@@ -1,0 +1,416 @@
+<div class="col-md-4 col-full">
+  <!-- TO DO List -->
+  <div class="box box-primary box-full">
+    <div class="box-header">
+      <i class="ion ion-clipboard"></i>
+      <h3 class="box-title">Listado de reportes</h3>
+      <div class="box-tools pull-right">
+        <button class="btn btn-box-tool" data-toggle="modal" data-target="#create-report-modal"><i class="fa fa-plus"></i></button>
+      </div>
+    </div><!-- /.box-header -->
+    <div class="box-body">
+      <ul class="todo-list">
+        <li ng-repeat="item in data">
+          <a href ng-click="getInfo(item.reportid)">
+            <i class="fa fa-file-text fa-4" style="color:#3c8dbc;font-size: 20px;"></i>
+            <span class="text">{{item.title}}</span>
+          </a>
+          <div class="tools">
+            <i class="fa fa-edit" style="color:#3c8dbc;font-size: 20px;"></i>
+            <i class="fa fa-trash-o" style="color:red;font-size: 20px;" ng-click="delReportPrompt(item.reportid)"></i>
+          </div>
+        </li>
+      </ul>
+    </div><!-- /.box-body -->
+  </div><!-- /.box -->
+
+</div>
+
+<div class="col-md-8 col-full" ng-show="viewDetail">
+  <div class="nav-tabs-custom box-full">
+    <ul class="nav nav-tabs">
+      <li class="li-panel active"><a href ng-click="setTab(1)" data-toggle="tab"><i class="fa fa-database"></i> Fuentes</a></li>
+      <li class="li-panel"><a href ng-click="setTab(2)" data-toggle="tab"><i class="fa fa-list-ol"></i> Sel.Elementos</a></li>
+    </ul>
+    <div class="tab-content box-tab-nav-full">
+
+      <!-- Tab obligatorios -->
+      <div class="active tab-pane box-full" ng-show="isSet(1)">
+        <div class="row box-full">
+          <div class="col-md-4 box-full" style="padding: 30px 5px 0 30px;">
+            <div class="box box-default box-tab-full">
+              <div class="box-header">
+                <i class="fa fa-dot-circle-o"></i>
+                <h3 class="box-title">Tablas</h3>
+                <div class="box-tools pull-right">
+                  <button class="btn btn-box-tool" data-toggle="modal" data-target="#add-table-modal"><i class="fa fa-plus"></i></button>
+                </div>
+              </div><!-- /.box-header -->
+              <div class="box-body">
+                <ul class="todo-list">
+                  <li ng-repeat="item in tables">
+                    <a href ng-click="basicInfo(item.reportid)">
+                      <i class="fa fa-dot-circle-o"></i>
+                      <span class="text">{{item.tabname}} -</span>
+                      <span class="text">{{item.ddtext}}</span>
+                    </a>
+                    <div class="tools">
+                      <i class="fa fa-trash-o" style="color:red;font-size: 15px;" ng-click="delTablePrompt(item.tabname)"></i>
+                    </div>
+                  </li>
+                </ul>
+              </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+          </div>
+          <div class="col-md-8 box-full" style="padding: 30px 30px 0 20px;">
+            <div class="row" style="height: 50%; padding-bottom: 10px;">
+              <!-- TO DO List -->
+              <div class="box box-default box-full">
+                <div class="box-header">
+                  <i class="fa fa-code-fork"></i>
+                  <h3 class="box-title">Condiciones de conexión</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-toggle="modal" data-target="#add-condition-modal"><i class="fa fa-plus"></i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <table class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center">Tabla</th>
+                        <th class="text-center">Nombre campo</th>
+                        <th class="text-center"></th>
+                        <th class="text-center">Tabla</th>
+                        <th class="text-center">Nombre campo</th>
+                        <th class="text-center"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="item in conditions">
+                        <th class="text-center" scope="row">{{$index}}</th>
+                        <td class="text-center">{{item.table1}}</td>
+                        <td class="text-center">{{item.field1}}</td>
+                        <td class="text-center">=</td>
+                        <td class="text-center">{{item.table2}}</td>
+                        <td class="text-center">{{item.field2}}</td>
+                        <td class="text-center">
+                          <div class="tools">
+                            <a href><i class="fa fa-trash-o" style="color:red;font-size: 20px;" ng-click="delCondPrompt(item.condid)"></i></a>
+                          </div>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+
+            </div>
+            <div class="row" style="height: 50%;">
+              <!-- TO DO List -->
+              <div class="box box-default box-full">
+                <div class="box-header">
+                  <i class="fa fa-filter"></i>
+                  <h3 class="box-title">Condiciones de selección</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-toggle="modal" data-target="#add-condition-sel-modal"><i class="fa fa-plus"></i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <table class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center">Tabla</th>
+                        <th class="text-center">Nombre campo</th>
+                        <th class="text-center">Operador</th>
+                        <th class="text-center">Valor de comparación</th>
+                        <th class="text-center">Conector</th>
+                        <th class="text-center"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="item in conditionsSel">
+                        <th class="text-center" scope="row">{{$index}}</th>
+                        <td class="text-center">{{item.tablename}}</td>
+                        <td class="text-center">{{item.fieldname}}</td>
+                        <td class="text-center">{{item.operator}}</td>
+                        <td class="text-center">{{item.value}}</td>
+                        <td class="text-center">{{item.connector}}</td>
+                        <td class="text-center">
+                          <div class="tools">
+                            <a href><i class="fa fa-trash-o" style="color:red;font-size: 20px;" ng-click="delCondSelPrompt(item.condid)"></i></a>
+                          </div>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.tab-pane obligatorios -->
+
+      <!-- Tab opcionales -->
+      <div class="active tab-pane" ng-show="isSet(2)">
+        <!-- TO DO List -->
+        <div class="box box-default box-full">
+          <div class="box-header">
+            <i class="fa fa-filter"></i>
+            <h3 class="box-title">Condiciones de selección</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-toggle="modal" data-target="#add-condition-sel-modal"><i class="fa fa-plus"></i></button>
+            </div>
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th class="text-center">#</th>
+                  <th class="text-center">Tabla</th>
+                  <th class="text-center">Nombre campo</th>
+                  <th class="text-center">Operador</th>
+                  <th class="text-center">Valor de comparación</th>
+                  <th class="text-center">Conector</th>
+                  <th class="text-center"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in conditionsSel">
+                  <th class="text-center" scope="row">{{$index}}</th>
+                  <td class="text-center">{{item.tablename}}</td>
+                  <td class="text-center">{{item.fieldname}}</td>
+                  <td class="text-center">{{item.operator}}</td>
+                  <td class="text-center">{{item.value}}</td>
+                  <td class="text-center">{{item.connector}}</td>
+                  <td class="text-center">
+                    <div class="tools">
+                      <a href><i class="fa fa-trash-o" style="color:red;font-size: 20px;" ng-click="delCondSelPrompt(item.condid)"></i></a>
+                    </div>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+
+      </div><!-- /.tab-pane opcionales -->
+
+    </div><!-- /.tab-content -->
+
+  </div><!-- /.nav-tabs-custom -->
+</div><!-- /.col -->
+
+
+<div class="modal fade" id="create-report-modal" tabindex="-1" role="dialog" aria-labelledby="create-report-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Crear reporte nuevo</h4>
+      </div>
+      <div class="modal-body">
+
+        <form ng-submit="save()" id="createForm">
+
+          <div class="form-group label-floating">
+            <label class="control-label">Nombre tecnico</label>
+            <input type="text" class="form-control" ng-model="data.tecname" required>
+            <span class="help-block">Ingrese un nombre tecnico por el cual un desarrollador lo podra identificar</span>
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">Titulo</label>
+            <input type="text" class="form-control" ng-model="data.title" required>
+            <span class="help-block">Este sera el titulo del reporte cuando se visualice</span>
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">Descripción</label>
+            <textarea class="form-control" rows="3" id="textArea" ng-model="data.description" required></textarea>
+            <span class="help-block">Esta descripción sirve para identificar la finalidad del reporte</span>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="submit" form="createForm" class="btn btn-primary">Crear</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="add-table-modal" tabindex="-1" role="dialog" aria-labelledby="add-table-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Agregar tabla</h4>
+      </div>
+      <div class="modal-body">
+        <form ng-submit="add()" id="AddTable">
+
+          <div class="form-group label-floating">
+            <label class="control-label">Nombre de tabla</label>
+            <input type="text" class="form-control" ng-model="tabname" required>
+            <span class="help-block">Ingrese el nombre de la tabla que desea agregar</span>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="submit" form="AddTable" class="btn btn-primary">Agregar</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="add-condition-modal" tabindex="-1" role="dialog" aria-labelledby="add-condition-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Agregar condición</h4>
+      </div>
+      <div class="modal-body">
+
+        <form ng-submit="addCond()" id="addCond">
+
+          <div class="form-group label-floating">
+            <label class="control-label">Tabla 1</label>
+            <select class="form-control" ng-model="tab1" ng-change="getFieldCond(1)">
+              <option value="">Seleccione una tabla de la lista</option>
+              <option ng-repeat="item in tables" value="{{item.tabname}}">{{item.tabname}}</option>
+            </select>
+            <span class="help-block">Seleccione la tabla para la condición</span>
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">Campo 1</label>
+            <select class="form-control" ng-model="field1">
+              <option value="">Seleccione un campo de la lista</option>
+              <option ng-repeat="item in condField1List" value="{{item.fieldname}}">{{item.fieldname}} - {{item.scrtext_l}}</option>
+            </select>
+            <span class="help-block">Seleccione el campo para la condición</span>
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">Tabla 2</label>
+            <select class="form-control" ng-model="tab2" ng-change="getFieldCond(2)">
+              <option value="">Seleccione una tabla de la lista</option>
+              <option ng-repeat="item in tables" value="{{item.tabname}}">{{item.tabname}}</option>
+            </select>
+            <span class="help-block">Seleccione la tabla para la condición</span>
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">Campo 2</label>
+            <select class="form-control" ng-model="field2">
+              <option value="">Seleccione un campo de la lista</option>
+              <option ng-repeat="item in condField2List" value="{{item.fieldname}}">{{item.fieldname}} - {{item.scrtext_l}}</option>
+            </select>
+            <span class="help-block">Seleccione el campo para la condición</span>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="submit" form="addCond" class="btn btn-primary">Agregar</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="add-condition-sel-modal" tabindex="-1" role="dialog" aria-labelledby="add-condition-sel-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Agregar condición de selección</h4>
+      </div>
+      <div class="modal-body">
+
+        <form ng-submit="addCondSel()" id="addCondSel">
+
+          <div class="form-group label-floating">
+            <label class="control-label">Tabla</label>
+            <select class="form-control" ng-model="tab1" ng-change="getFieldCond(1)">
+              <option value="">Seleccione una tabla de la lista</option>
+              <option ng-repeat="item in tables" value="{{item.tabname}}">{{item.tabname}}</option>
+            </select>
+            <span class="help-block">Seleccione la tabla para la condición</span>
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">Campo</label>
+            <select class="form-control" ng-model="field1">
+              <option value="">Seleccione un campo de la lista</option>
+              <option ng-repeat="item in condField1List" value="{{item.fieldname}}">{{item.fieldname}} - {{item.scrtext_l}}</option>
+            </select>
+            <span class="help-block">Seleccione el campo para la condición</span>
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">Operador</label>
+            <select class="form-control" ng-model="operator">
+              <option value="">Seleccione un operador de la lista</option>
+              <option value="EQ">Igual a</option>
+              <option value="NE">Diferente a</option>
+              <option value="GE">Mayor o igual a</option>
+              <option value="GT">Mayor que</option>
+              <option value="LE">Menor o igual a</option>
+              <option value="GT">Menor que</option>
+            </select>
+            <span class="help-block">Seleccione la operación para la condición</span>
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">Valor de condición</label>
+            <input type="text" class="form-control" ng-model="value" required>
+            <span class="help-block">Ingrese el valor para la condición</span>
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">Conector</label>
+            <select class="form-control" ng-model="connector">
+              <option value="">Seleccione un conector de la lista</option>
+              <option value="AND">Y</option>
+              <option value="OR">O</option>
+            </select>
+            <span class="help-block">Seleccione el conector para la condición</span>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="submit" form="addCondSel" class="btn btn-primary">Agregar</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="delete-prompt-modal" tabindex="-1" role="dialog" aria-labelledby="delete-report-prompt-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Confirmación de borrado</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{messagePrompt}}</p>
+        <p><b>¿Esta seguro de continuar?</b></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" ng-click="deleteData()">Eliminar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
