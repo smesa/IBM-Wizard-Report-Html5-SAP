@@ -16,14 +16,14 @@ angular.module('sapWizardReportApp')
     $scope.key    = '';
     $scope.delOpc = '';
     $scope.messagePrompt = '';
-
-
     $scope.data = [];
     $scope.tables = [];
     $scope.conditions = [];
     $scope.conditionsSel = [];
     $scope.condField1List = [];
     $scope.condField2List = [];
+    $scope.fields = [];
+
 
     $crud.get(mandt).then(function(resp){
       $root.data = resp;
@@ -32,6 +32,10 @@ angular.module('sapWizardReportApp')
     $root.$watch('data', function(newValue, oldValue) {
       $scope.data = $root.data;;
     });
+
+    $scope.$watch('tables',function(newValue,oldValue){
+      $scope.getAllFieldFromTables();
+    })
 
     $scope.basicInfo = function(id){
       $location.path('/basic_info/' + id)
@@ -58,6 +62,18 @@ angular.module('sapWizardReportApp')
       $crud.getConditionsSelById(mandt,key).then(function(resp){
         $scope.conditionsSel = resp;
       });
+
+    }
+
+    $scope.getAllFieldFromTables = function(){
+      $scope.fields = [];
+      angular.forEach($scope.tables,function(item){
+        $crud.getTableFields(mandt,item.tabname).then(function(resp){
+          angular.forEach(resp,function(field){
+            $scope.fields.push(field);
+          })
+        });
+      })
     }
 
     $scope.getFieldCond = function(tab){

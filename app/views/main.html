@@ -163,9 +163,9 @@
         <div class="box box-default box-full">
           <div class="box-header">
             <i class="fa fa-filter"></i>
-            <h3 class="box-title">Condiciones de selección</h3>
+            <h3 class="box-title">Elementos para reporte</h3>
             <div class="box-tools pull-right">
-              <button class="btn btn-box-tool" data-toggle="modal" data-target="#add-condition-sel-modal"><i class="fa fa-plus"></i></button>
+              <button class="btn btn-box-tool" data-toggle="modal" data-target="#add-field-modal"><i class="fa fa-plus"></i></button>
             </div>
           </div><!-- /.box-header -->
           <div class="box-body">
@@ -173,22 +173,26 @@
               <thead>
                 <tr>
                   <th class="text-center">#</th>
+                  <th class="text-center">Elemento</th>
+                  <th class="text-center">Descripción</th>
                   <th class="text-center">Tabla</th>
-                  <th class="text-center">Nombre campo</th>
-                  <th class="text-center">Operador</th>
-                  <th class="text-center">Valor de comparación</th>
-                  <th class="text-center">Conector</th>
+                  <th class="text-center">Tipo</th>
+                  <th class="text-center">Longitud</th>
+                  <th class="text-center">Decimales</th>
+                  <th class="text-center">Dominio</th>
                   <th class="text-center"></th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="item in conditionsSel">
+                <tr ng-repeat="item in elements">
                   <th class="text-center" scope="row">{{$index}}</th>
-                  <td class="text-center">{{item.tablename}}</td>
                   <td class="text-center">{{item.fieldname}}</td>
-                  <td class="text-center">{{item.operator}}</td>
-                  <td class="text-center">{{item.value}}</td>
-                  <td class="text-center">{{item.connector}}</td>
+                  <td class="text-center">{{item.scrtext_m}}</td>
+                  <td class="text-center">{{item.tabname}}</td>
+                  <td class="text-center">{{item.datatype}}</td>
+                  <td class="text-center">{{item.intlen}}</td>
+                  <td class="text-center">{{item.decimals}}</td>
+                  <td class="text-center">{{item.domname}}</td>
                   <td class="text-center">
                     <div class="tools">
                       <a href><i class="fa fa-trash-o" style="color:red;font-size: 20px;" ng-click="delCondSelPrompt(item.condid)"></i></a>
@@ -198,6 +202,7 @@
 
               </tbody>
             </table>
+
           </div><!-- /.box-body -->
         </div><!-- /.box -->
 
@@ -410,6 +415,56 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-primary" ng-click="deleteData()">Eliminar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal modal fade" id="add-field-modal" tabindex="-1" role="dialog" aria-labelledby="add-field-prompt-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="height: 900px;overflow: auto;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Selección de elementos</h4>
+      </div>
+      <div class="modal-body" style="height: 86%;overflow: auto;">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th class="text-center">#</th>
+              <th class="text-center">Elemento</th>
+              <th class="text-center">Descripción</th>
+              <th class="text-center">Tabla</th>
+              <th class="text-center">Tipo</th>
+              <th class="text-center">Longitud</th>
+              <th class="text-center">Decimales</th>
+              <th class="text-center">Dominio</th>
+              <th class="text-center"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in fields">
+              <th class="text-center" scope="row">{{$index}}</th>
+              <td class="text-center">{{item.fieldname}}</td>
+              <td class="text-center">{{item.scrtext_m}}</td>
+              <td class="text-center">{{item.tabname}}</td>
+              <td class="text-center">{{item.datatype}}</td>
+              <td class="text-center">{{item.intlen}}</td>
+              <td class="text-center">{{item.decimals}}</td>
+              <td class="text-center">{{item.domname}}</td>
+              <td class="text-center">
+                <div class="tools">
+                  <input type="checkbox" name="name" value="">
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" ng-click="addField()">Agregar</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
