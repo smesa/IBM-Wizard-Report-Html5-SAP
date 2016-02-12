@@ -23,16 +23,6 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main'
       })
-      .when('/basic_info/:id', {
-        templateUrl: 'views/basic_info.html',
-        controller: 'BasicInfoCtrl',
-        controllerAs: 'basicInfo'
-      })
-      .when('/source_info/:id', {
-        templateUrl: 'views/source_info.html',
-        controller: 'SourceInfoCtrl',
-        controllerAs: 'sourceInfo'
-      })
       .otherwise({
         redirectTo: '/'
       });

@@ -1,4 +1,4 @@
-<div class="col-md-4 col-full">
+<div class="col-md-2 col-full">
   <!-- TO DO List -->
   <div class="box box-primary box-full">
     <div class="box-header">
@@ -26,11 +26,11 @@
 
 </div>
 
-<div class="col-md-8 col-full" ng-show="viewDetail">
+<div class="col-md-10 col-full" ng-show="viewDetail">
   <div class="nav-tabs-custom box-full">
     <ul class="nav nav-tabs">
       <li class="li-panel active"><a href ng-click="setTab(1)" data-toggle="tab"><i class="fa fa-database"></i> Fuentes</a></li>
-      <li class="li-panel"><a href ng-click="setTab(2)" data-toggle="tab"><i class="fa fa-list-ol"></i> Sel.Elementos</a></li>
+      <li class="li-panel"><a href ng-click="setTab(2)" data-toggle="tab"><i class="fa fa-bars"></i> Elementos</a></li>
     </ul>
     <div class="tab-content box-tab-nav-full">
 
@@ -168,7 +168,7 @@
               <button class="btn btn-box-tool" data-toggle="modal" data-target="#add-field-modal"><i class="fa fa-plus"></i></button>
             </div>
           </div><!-- /.box-header -->
-          <div class="box-body">
+          <div class="box-body" style="overflow: auto;height: 700px;">
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
@@ -180,22 +180,44 @@
                   <th class="text-center">Longitud</th>
                   <th class="text-center">Decimales</th>
                   <th class="text-center">Dominio</th>
+                  <th class="text-center">Filtro</th>
+                  <th class="text-center">Sumar</th>
+                  <th class="text-center">Agrupar</th>
+                  <th class="text-center">Ordenar Asc</th>
+                  <th class="text-center">Ordenar Desc</th>
+                  <th class="text-center"></th>
+                  <th class="text-center"></th>
                   <th class="text-center"></th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="item in elements">
+                <tr ng-repeat="item in fieldsReport">
                   <th class="text-center" scope="row">{{$index}}</th>
                   <td class="text-center">{{item.fieldname}}</td>
-                  <td class="text-center">{{item.scrtext_m}}</td>
+                  <td class="text-center"><input type="text" class="form-control" ng-model="item.description"></td>
                   <td class="text-center">{{item.tabname}}</td>
                   <td class="text-center">{{item.datatype}}</td>
-                  <td class="text-center">{{item.intlen}}</td>
+                  <td class="text-center">{{item.leng}}</td>
                   <td class="text-center">{{item.decimals}}</td>
                   <td class="text-center">{{item.domname}}</td>
+                  <td class="text-center"><input type="checkbox" ng-change="setCheck('filter',item.filter,item.fieldname,item.tabname)" ng-model="item.filter"></td>
+                  <td class="text-center"><input type="checkbox" ng-change="setCheck('sumby',item.sumby,item.fieldname,item.tabname)" ng-model="item.sumby"></td>
+                  <td class="text-center"><input type="checkbox" ng-change="setCheck('groupby',item.groupby,item.fieldname,item.tabname)" ng-model="item.groupby"></td>
+                  <td class="text-center"><input type="checkbox" ng-change="setCheck('orderbyasc',item.orderbyasc,item.fieldname,item.tabname)" ng-model="item.orderbyasc"></td>
+                  <td class="text-center"><input type="checkbox" ng-change="setCheck('orderbydesc',item.orderbydesc,item.fieldname,item.tabname)" ng-model="item.orderbydesc"></td>
                   <td class="text-center">
                     <div class="tools">
-                      <a href><i class="fa fa-trash-o" style="color:red;font-size: 20px;" ng-click="delCondSelPrompt(item.condid)"></i></a>
+                      <a href><i class="fa fa-long-arrow-up"  ng-click="sortField('U',item.sort)"></i></a>
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <div class="tools">
+                      <a href><i class="fa fa-long-arrow-down"  ng-click="sortField('D',item.sort)"></i></a>
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <div class="tools">
+                      <a href><i class="fa fa-trash-o" style="color:red;" tooltip="Eliminar" ng-click="delFieldPrompt(item.tabname,item.fieldname)"></i></a>
                     </div>
                   </td>
                 </tr>
@@ -420,7 +442,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal modal fade" id="add-field-modal" tabindex="-1" role="dialog" aria-labelledby="add-field-prompt-modal">
+<div class="modal modal fade" id="add-field-modal" tabindex="-1" role="dialog" aria-labelledby="add-field-modal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content" style="height: 900px;overflow: auto;">
       <div class="modal-header">
@@ -449,12 +471,12 @@
               <td class="text-center">{{item.scrtext_m}}</td>
               <td class="text-center">{{item.tabname}}</td>
               <td class="text-center">{{item.datatype}}</td>
-              <td class="text-center">{{item.intlen}}</td>
+              <td class="text-center">{{item.leng}}</td>
               <td class="text-center">{{item.decimals}}</td>
               <td class="text-center">{{item.domname}}</td>
               <td class="text-center">
                 <div class="tools">
-                  <input type="checkbox" name="name" value="">
+                  <button type="button" class="btn btn-primary btn-sm" ng-click="addField(item)">Agregar</button>
                 </div>
               </td>
             </tr>
@@ -464,7 +486,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" ng-click="addField()">Agregar</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

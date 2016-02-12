@@ -62,3 +62,8 @@ body {
 .well .list-group {
     margin-bottom: 0px;
 }
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}

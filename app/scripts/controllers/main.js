@@ -23,6 +23,12 @@ angular.module('sapWizardReportApp')
     $scope.condField1List = [];
     $scope.condField2List = [];
     $scope.fields = [];
+    $scope.fieldsReport = [];
+    $scope.data = {};
+    $scope.data.tecname = '';
+    $scope.data.title = '';
+    $scope.data.description = '';
+    $scope.tab = 1;
 
 
     $crud.get(mandt).then(function(resp){
@@ -63,12 +69,16 @@ angular.module('sapWizardReportApp')
         $scope.conditionsSel = resp;
       });
 
+      $crud.getFields(mandt,key).then(function(resp){
+        $scope.fieldsReport = resp;
+      });
+
     }
 
     $scope.getAllFieldFromTables = function(){
       $scope.fields = [];
       angular.forEach($scope.tables,function(item){
-        $crud.getTableFields(mandt,item.tabname).then(function(resp){
+        $crud.getTableFields(mandt,$scope.key,item.tabname).then(function(resp){
           angular.forEach(resp,function(field){
             $scope.fields.push(field);
           })
@@ -80,12 +90,12 @@ angular.module('sapWizardReportApp')
 
       switch (tab) {
         case 1:
-          $crud.getTableFields(mandt,$scope.tab1).then(function(resp){
+          $crud.getTableFields(mandt,'',$scope.tab1).then(function(resp){
             $scope.condField1List = resp;
           });
           break;
         case 2:
-          $crud.getTableFields(mandt,$scope.tab2).then(function(resp){
+          $crud.getTableFields(mandt,'',$scope.tab2).then(function(resp){
             $scope.condField2List = resp;
           });
           break;
@@ -94,10 +104,6 @@ angular.module('sapWizardReportApp')
 
     }
 
-    $scope.data = {};
-    $scope.data.tecname = '';
-    $scope.data.title = '';
-    $scope.data.description = '';
 
     $scope.save = function(){
 
@@ -176,8 +182,16 @@ angular.module('sapWizardReportApp')
       $('#delete-prompt-modal').modal('show');
     }
 
+    $scope.delFieldPrompt = function(table,fieldname){
+      $scope.tab1 = table;
+      $scope.fieldname = fieldname;
+      $scope.delOpc = 'fl';
+      $scope.messagePrompt = 'Esta acción eliminara el elemento seleccionado';
+      $('#delete-prompt-modal').modal('show');
+    }
+
     $scope.deleteData = function(){
-      $crud.destroy(mandt,$scope.delOpc,$scope.key,$scope.tab1,$scope.condid).then(function(resp){
+      $crud.destroy(mandt,$scope.delOpc,$scope.key,$scope.tab1,$scope.condid,$scope.fieldname).then(function(resp){
         $crud.get(mandt).then(function(resp){
           $root.data = resp;
         });
@@ -190,11 +204,51 @@ angular.module('sapWizardReportApp')
         $crud.getConditionsSelById(mandt,$scope.key).then(function(resp){
           $scope.conditionsSel = resp;
         });
+        $crud.getFields(mandt,$scope.key).then(function(resp){
+          $scope.fieldsReport = resp;
+        });
         $('#delete-prompt-modal').modal('hide');
       })
     }
 
-    $scope.tab = 1;
+    $scope.addField = function(item){
+
+      $crud.setFields(mandt,$scope.key,item.tabname,item.fieldname,item.scrtext_m).then(function(info){
+        $crud.getFields(mandt,$scope.key).then(function(resp){
+          $scope.fieldsReport = resp;
+        });
+      });
+    }
+
+    $scope.sortField = function(option,sort){
+
+      switch (option) {
+        case 'U':
+          var sort_new = parseInt(sort) - 1;
+          $crud.sortField(mandt,$scope.key,sort_new, sort).then(function(resp){
+            $crud.getFields(mandt,$scope.key).then(function(resp){
+              $scope.fieldsReport = resp;
+            });
+          });
+          break;
+        case 'D':
+          var sort_new = parseInt(sort) + 1;
+          $crud.sortField(mandt,$scope.key,sort_new, sort).then(function(resp){
+            $crud.getFields(mandt,$scope.key).then(function(resp){
+              $scope.fieldsReport = resp;
+            });
+          });
+          break;
+      }
+    }
+
+    $scope.setCheck = function(field,flag,fieldname,tabname){
+      $crud.setCheck(mandt,$scope.key,tabname,fieldname,field,flag).then(function(resp){
+        $crud.getFields(mandt,$scope.key).then(function(resp){
+          $scope.fieldsReport = resp;
+        });
+      });
+    }
 
     $scope.setTab = function(newTab){
       $scope.tab = newTab;

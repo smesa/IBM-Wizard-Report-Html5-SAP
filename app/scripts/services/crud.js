@@ -165,7 +165,36 @@ angular.module('sapWizardReportApp')
       return deferred.promise;
     }
 
-    function getTableFields(mandt,tabname){
+    function getFields(mandt, id){
+
+      var deferred  = $q.defer();
+      var sURL      = url + mandt;
+
+      var oParameters = {
+        "_method"		  : 'GET',
+        "option"      : 'getFields',
+        "reportid"     : id
+      };
+
+      jQuery.ajax({
+          url: sURL,
+          async: true,
+          dataType: 'json',
+          data: oParameters,
+          type: 'GET',
+
+          success: function(oData) {
+            return deferred.resolve(oData);
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown){
+            return deferred.reject(textStatus)
+          }
+      });
+
+      return deferred.promise;
+    }
+
+    function getTableFields(mandt,key,tabname){
 
       var deferred  = $q.defer();
       var sURL      = url + mandt;
@@ -173,7 +202,8 @@ angular.module('sapWizardReportApp')
       var oParameters = {
         "_method"		  : 'GET',
         "option"      : 'tabFields',
-        "tabname"     : tabname
+        "tabname"     : tabname,
+        "reportid"    : key
       };
 
       jQuery.ajax({
@@ -297,6 +327,106 @@ angular.module('sapWizardReportApp')
       return deferred.promise;
     }
 
+    function setFields(mandt,key,tabname,field,description){
+
+      var deferred  = $q.defer();
+      var sURL      = url + '100';
+
+      var oParameters = {
+              "reportid" 		: key,
+              "table"       : tabname,
+              "field"	      : field,
+              "description" : description,
+              "option"      : 'setField',
+  	          "_method"		  : 'POST',
+      };
+
+      jQuery.ajax({
+          url: sURL,
+          async: true,
+          dataType: 'json',
+          data: oParameters,
+          type: 'GET',
+
+          success: function(oData) {
+            return deferred.resolve(oData);
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown){
+            return deferred.reject(textStatus)
+          }
+      });
+
+      return deferred.promise;
+
+    }
+
+    function sortField(mandt,key,sort_new,sort_old){
+
+      var deferred  = $q.defer();
+      var sURL      = url + mandt;
+
+      var oParameters = {
+        "_method"		  : 'GET',
+        "option"      : 'sortField',
+        "sort_new"    : sort_new,
+        "sort_old"    : sort_old,
+        "reportid"    : key,
+        "_method"		  : 'POST',
+      };
+
+      jQuery.ajax({
+          url: sURL,
+          async: true,
+          dataType: 'json',
+          headers : { "Accept" : 'application/json' },
+          data: oParameters,
+          type: 'GET',
+
+          success: function(oData) {
+            return deferred.resolve(oData);
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown){
+            return deferred.reject(textStatus)
+          }
+      });
+
+      return deferred.promise;
+    }
+
+    function setCheck(mandt,key,tabname,fieldname,option,flag){
+
+      var deferred  = $q.defer();
+      var sURL      = url + mandt;
+
+      var oParameters = {
+        "_method"		  : 'GET',
+        "option"      : option,
+        "reportid"    : key,
+        "tabname"     : tabname,
+        "fieldname"   : fieldname,
+        "flag"        : flag,
+        "_method"		  : 'PUT',
+      };
+
+      jQuery.ajax({
+          url: sURL,
+          async: true,
+          dataType: 'json',
+          headers : { "Accept" : 'application/json' },
+          data: oParameters,
+          type: 'GET',
+
+          success: function(oData) {
+            return deferred.resolve(oData);
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown){
+            return deferred.reject(textStatus)
+          }
+      });
+
+      return deferred.promise;
+    }
+
     function create(data){
 
       var deferred  = $q.defer();
@@ -328,7 +458,9 @@ angular.module('sapWizardReportApp')
       return deferred.promise;
     }
 
-    function destroy(mandt, option, key, tabname, condid){
+
+
+    function destroy(mandt, option, key, tabname, condid, fieldname){
 
         var deferred  = $q.defer();
         var sURL      = url + '100';
@@ -338,6 +470,7 @@ angular.module('sapWizardReportApp')
                 "reportid"    : key,
                 "tabname"     : tabname,
                 "condid"      : condid,
+                "fieldname"   : fieldname,
     	          "_method"		  : 'DELETE',
         };
 
@@ -369,9 +502,13 @@ angular.module('sapWizardReportApp')
       getConditionsById: getConditionsById,
       getConditionsSelById: getConditionsSelById,
       getTableFields: getTableFields,
+      getFields: getFields,
       setTable: setTable,
       setCondition: setCondition,
       setConditionSel: setConditionSel,
+      setFields: setFields,
+      sortField: sortField,
+      setCheck: setCheck,
       create: create,
       destroy: destroy
     };
