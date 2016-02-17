@@ -14,14 +14,20 @@ angular
     'ngCookies',
     'ngResource',
     'ngRoute',
-    'ngSanitize'
+    'ngSanitize',
+    'ui.grid'
   ])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/:mandt', {
+      .when('/main/:mandt', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         controllerAs: 'main'
+      })
+      .when('/grid/:key', {
+        templateUrl: 'views/grid.html',
+        controller: 'GridCtrl',
+        controllerAs: 'grid'
       })
       .otherwise({
         redirectTo: '/'

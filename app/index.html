@@ -38,6 +38,9 @@
     <link rel="stylesheet" href="vendors/lte/plugins/daterangepicker/daterangepicker-bs3.css">
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="vendors/lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
+    <!-- Angular ui-grid -->
+    <link rel="styleSheet" href="bower/angular-ui-grid/ui-grid.min.css"/>
     <!-- Custom -->
     <link rel="stylesheet" href="styles/main.css">
 
@@ -105,6 +108,7 @@
     <script src="bower/angular-resource/angular-resource.js"></script>
     <script src="bower/angular-route/angular-route.js"></script>
     <script src="bower/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower/angular-ui-grid/ui-grid.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -146,6 +150,45 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/services/crud.js"></script>
+        <script src="scripts/controllers/grid.js"></script>
         <!-- endbuild -->
 </body>
 </html>
+
+<div class="modal fade" id="create-report-modal" tabindex="-1" role="dialog" aria-labelledby="create-report-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Crear reporte nuevo</h4>
+      </div>
+      <div class="modal-body">
+
+        <form ng-submit="save()" id="createForm">
+
+          <div class="form-group label-floating">
+            <label class="control-label">Nombre tecnico</label>
+            <input type="text" class="form-control" ng-model="data.tecname" required>
+            <span class="help-block">Ingrese un nombre tecnico por el cual un desarrollador lo podra identificar</span>
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">Titulo</label>
+            <input type="text" class="form-control" ng-model="data.title" required>
+            <span class="help-block">Este sera el titulo del reporte cuando se visualice</span>
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">Descripción</label>
+            <textarea class="form-control" rows="3" id="textArea" ng-model="data.description" required></textarea>
+            <span class="help-block">Esta descripción sirve para identificar la finalidad del reporte</span>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="submit" form="createForm" class="btn btn-primary">Crear</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>

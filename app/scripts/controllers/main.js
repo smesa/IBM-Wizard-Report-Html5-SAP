@@ -8,8 +8,8 @@
  * Controller of the sapWizardReportApp
  */
 angular.module('sapWizardReportApp')
-  .controller('MainCtrl',['$scope','$rootScope','crud','$routeParams','$location',
-    function ($scope,$root,$crud, $routeParams,$location) {
+  .controller('MainCtrl',['$scope','$rootScope','crud','$routeParams','$location','$window',
+    function ($scope,$root,$crud, $routeParams,$location,$window) {
 
     var mandt =  100;
     $scope.viewDetail = false;
@@ -250,6 +250,14 @@ angular.module('sapWizardReportApp')
       });
     }
 
+    $scope.setDesc = function(){
+      $crud.setDesc(mandt,$scope.key,tabname,fieldname,field,flag).then(function(resp){
+        $crud.getFields(mandt,$scope.key).then(function(resp){
+          $scope.fieldsReport = resp;
+        });
+      });
+    }
+
     $scope.setTab = function(newTab){
       $scope.tab = newTab;
     };
@@ -258,5 +266,26 @@ angular.module('sapWizardReportApp')
       return $scope.tab === tabNum;
     };
 
+    $scope.changeFieldPrompt = function(tab1, fieldname, desc){
+      $scope.tab1 = tab1;
+      $scope.fieldname = fieldname;
+      $scope.desc = desc;
+      $('#edit-field-modal').modal('show');
+    }
+
+    $scope.changeField = function(){
+      $crud.changeField(mandt,$scope.key,$scope.tab1,$scope.fieldname,$scope.desc).then(function(resp){
+        $crud.getFields(mandt,$scope.key).then(function(resp){
+          $scope.fieldsReport = resp;
+        });
+      });
+      $('#edit-field-modal').modal('hide');
+    }
+
+    $scope.openPreview = function(){
+      console.log($location)
+      var locationnew = $location.$$absUrl.replace($location.$$path,'') + '/grid/' + $scope.key;
+      $window.open(locationnew, '_blank');
+    }
 
   }]);

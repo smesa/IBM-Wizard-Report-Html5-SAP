@@ -224,6 +224,35 @@ angular.module('sapWizardReportApp')
       return deferred.promise;
     }
 
+    function getDataForms(mandt, id){
+
+      var deferred  = $q.defer();
+      var sURL      = url + mandt;
+
+      var oParameters = {
+        "_method"		  : 'GET',
+        "option"      : 'getDataForm',
+        "reportid"     : id
+      };
+
+      jQuery.ajax({
+          url: sURL,
+          async: true,
+          dataType: 'json',
+          data: oParameters,
+          type: 'GET',
+
+          success: function(oData) {
+            return deferred.resolve(oData);
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown){
+            return deferred.reject(textStatus)
+          }
+      });
+
+      return deferred.promise;
+    }
+
     function setTable(mandt,key,name){
 
       var deferred  = $q.defer();
@@ -427,6 +456,42 @@ angular.module('sapWizardReportApp')
       return deferred.promise;
     }
 
+    function changeField(mandt,key,tabname,fieldname,desc){
+
+      var deferred  = $q.defer();
+      var sURL      = url + mandt;
+
+      var oParameters = {
+        "_method"		  : 'GET',
+        "option"      : 'changeField',
+        "reportid"    : key,
+        "tabname"     : tabname,
+        "fieldname"   : fieldname,
+        "desc"        : desc,
+        "_method"		  : 'PUT',
+      };
+
+      jQuery.ajax({
+          url: sURL,
+          async: true,
+          dataType: 'json',
+          headers : { "Accept" : 'application/json' },
+          data: oParameters,
+          type: 'GET',
+
+          success: function(oData) {
+            return deferred.resolve(oData);
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown){
+            return deferred.reject(textStatus)
+          }
+      });
+
+      return deferred.promise;
+
+
+    }
+
     function create(data){
 
       var deferred  = $q.defer();
@@ -503,12 +568,14 @@ angular.module('sapWizardReportApp')
       getConditionsSelById: getConditionsSelById,
       getTableFields: getTableFields,
       getFields: getFields,
+      getDataForms: getDataForms,
       setTable: setTable,
       setCondition: setCondition,
       setConditionSel: setConditionSel,
       setFields: setFields,
       sortField: sortField,
       setCheck: setCheck,
+      changeField: changeField,
       create: create,
       destroy: destroy
     };
