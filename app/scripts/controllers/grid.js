@@ -14,36 +14,102 @@ angular.module('sapWizardReportApp')
     var key =  $routeParams.key;
     var mandt = '110';
 
-    var today = new Date();
-    var nextWeek = new Date();
-    nextWeek.setDate(nextWeek.getDate() + 7);
+    $scope.viewFilter = false;
+    $scope.viewReport = false;
+
+    $scope.logo = 'https://gestiondesempeno.compensar.com/gestiondesempeno/imagenes/logo_compensar.png';
+
+    $crud.getById(mandt,key).then(function(resp){
+      angular.forEach(resp,function(item){
+          $scope.title = item.title;
+      })
+    });
 
     $crud.getFields(mandt,key).then(function(resp){
       $scope.fieldsReport = resp;
-    });
 
-    $crud.getDataForms(mandt,key).then(function(resp){
+      angular.forEach(resp,function(item){
 
-      var values = JSON.stringify(resp);
-      var fields = JSON.stringify($scope.fieldsReport);
-      fields = JSON.parse(fields);
+        if(item.filter == true){
 
-      angular.forEach(fields,function(item){
+          $scope.viewFilter     = true;
 
-        item.fieldname = item.fieldname.toLowerCase();
-        //item.description = item.description.replace(/ /g,'_')
-        //item.description = item.description.split(' ').join('_');
-        //item.description = item.description.replace(/./,'')
-        values = values.split(item.fieldname).join(item.description);
-        item.fieldname = item.fieldname.toUpperCase();
-        values = values.split(item.fieldname).join(item.description);
+          var newDiv 				    = document.createElement('div');
+          newDiv.className 		  = 'form-group col-md-3';
+
+          var newLabel 			    = document.createElement('label');
+          newLabel.innerHTML  	= item.description;
+
+          var newDiv2 				  = document.createElement('div');
+          newDiv2.className 		= 'input-group';
+
+          var newInput 			    = document.createElement('input');
+          newInput.type 			  = 'text';
+          newInput.className  	= 'form-control';
+
+          var newSpan 			    = document.createElement('span');
+          newSpan.className 	  = 'input-group-addon';
+
+          switch (item.datatype.toLowerCase()) {
+            case 'char':
+              var icon = 'fa-text-width'
+              break;
+            case 'dats':
+              var icon = 'fa-calendar'
+              break;
+            case 'tims':
+              var icon = 'fa-clock-o'
+              break;
+            case 'cuky':
+              var icon = 'fa-money'
+              break;
+            case 'curr':
+              var icon = 'fa-usd'
+              break;
+            default:
+              var icon = 'fa-text-width'
+              break;
+          }
+
+          var newIcon 			    = document.createElement('i');
+          newIcon.className 	  = 'fa ' + icon;
+
+          newDiv.appendChild(newLabel);
+          newDiv.appendChild(newDiv2);
+          newDiv2.appendChild(newInput);
+          newDiv2.appendChild(newSpan);
+          newSpan.appendChild(newIcon);
+
+          var elmparent = $('#filters');
+          elmparent.append(newDiv);
+        }
       })
-
-      var values = JSON.parse(values);
-      $scope.gridOptions.data = values;
-      //$scope.gridOptions.data = resp;
-
     });
+
+    $scope.$watch('fieldsReport',function(newValue,oldValue){
+      if($scope.viewFilter == false && $scope.fieldsReport){
+          $scope.getDataForms();
+      }
+    })
+
+    $scope.getDataForms = function(){
+      $crud.getDataForms(mandt,key).then(function(resp){
+        $scope.viewReport = true;
+        var values = JSON.stringify(resp);
+        var fields = JSON.stringify($scope.fieldsReport);
+        fields = JSON.parse(fields);
+
+        angular.forEach(fields,function(item){
+          item.fieldname = item.fieldname.toLowerCase();
+          values = values.split(item.fieldname).join(item.description);
+          item.fieldname = item.fieldname.toUpperCase();
+          values = values.split(item.fieldname).join(item.description);
+        })
+
+        var values = JSON.parse(values);
+        $scope.gridOptions.data = values;
+      });
+    }
 
     $scope.highlightFilteredHeader = function( row, rowRenderIndex, col, colRenderIndex ) {
       if( col.filters[0].term ){

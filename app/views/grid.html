@@ -1,22 +1,50 @@
-<div class="jumbotron">
-  <img src="http://egogc.com/wp-content/uploads/2013/06/compensar.png" style="width: 20%;" />
-  <h4 class="lead text-center"><b>Reporte para arqueos y auditorías<b></h4>
-  <form>
-    <div class="form-group">
-      <label class="control-label">Cajero</label>
-      <div>
-        <input type="text" class="form-control col-md-6">
+
+<div class="container-fluid">
+  <div class="box box-default">
+    <div class="box-body">
+      <div class="row">
+        <div class="col-md-3">
+          <img id="logo" src="{{logo}}">
+        </div>
+        <div class="col-md-6 text-center">
+          <h2 id="title">{{title}}</h2>
+        </div>
       </div>
     </div>
-    <br>
-    <div class="form-group">
-      <label class="control-label text-right">Fecha de arquero</label>
-      <div>
-        <input type="password" class="form-control">
-      </div>
+  </div><!-- /.box-body -->
+</div>
+
+<div class="container-fluid" ng-show="viewFilter">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Filtros de selección</h3>
+          <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div><!-- /.box-tools -->
+        </div><!-- /.box-header -->
+        <div id="filters" class="box-body"></div>
+        <div class="box-footer">
+          <form action="#" method="post">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-primary btn-md btn-flat pull-right" ng-click="getDataForms()">Consultar</button>
+              </span>
+            </div>
+          </form>
+        </div>
+      </div><!-- /.box -->
+
     </div>
-  </form>
+  </div>
 </div>
 
 
-<div id="grid1" ui-grid="gridOptions" class="grid"></div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div id="grid1" ui-grid="gridOptions" class="grid"></div>
+    </div>
+  </div>
+</div>
