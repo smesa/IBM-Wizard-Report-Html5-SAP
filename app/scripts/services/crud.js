@@ -359,7 +359,7 @@ angular.module('sapWizardReportApp')
     function setFields(mandt,key,tabname,field,description){
 
       var deferred  = $q.defer();
-      var sURL      = url + '100';
+      var sURL      = url + mandt;
 
       var oParameters = {
               "reportid" 		: key,
@@ -492,10 +492,10 @@ angular.module('sapWizardReportApp')
 
     }
 
-    function create(data){
+    function create(mandt,data){
 
       var deferred  = $q.defer();
-      var sURL      = url + '100';
+      var sURL      = url + mandt;
 
       var oParameters = {
               "tecname" 		: data.tecname,
@@ -528,7 +528,7 @@ angular.module('sapWizardReportApp')
     function destroy(mandt, option, key, tabname, condid, fieldname){
 
         var deferred  = $q.defer();
-        var sURL      = url + '100';
+        var sURL      = url + mandt;
 
         var oParameters = {
                 "option" 		  : option,

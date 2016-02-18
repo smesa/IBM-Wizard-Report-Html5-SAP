@@ -11,7 +11,7 @@ angular.module('sapWizardReportApp')
   .controller('MainCtrl',['$scope','$rootScope','crud','$routeParams','$location','$window',
     function ($scope,$root,$crud, $routeParams,$location,$window) {
 
-    var mandt =  100;
+    var mandt =  110;
     $scope.viewDetail = false;
     $scope.key    = '';
     $scope.delOpc = '';
@@ -107,7 +107,7 @@ angular.module('sapWizardReportApp')
 
     $scope.save = function(){
 
-      $crud.create($scope.data).then(function(resp){
+      $crud.create(mandt,$scope.data).then(function(resp){
 
         $('#create-report-modal').modal('hide');
         $scope.data = {}
