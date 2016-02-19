@@ -17,7 +17,8 @@ angular
     'ngSanitize',
     'ui.grid',
     'ui.grid.resizeColumns',
-    'ui.grid.grouping'
+    'ui.grid.grouping',
+    'ui.grid.exporter'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -35,4 +36,8 @@ angular
         redirectTo: '/'
       });
 
-  });
+  })
+ .run(function($locale){
+    $locale.NUMBER_FORMATS.GROUP_SEP = '.';
+    $locale.NUMBER_FORMATS.DECIMAL_SEP = ',';
+ });

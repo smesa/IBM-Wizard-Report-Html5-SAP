@@ -8,8 +8,8 @@
  * Controller of the sapWizardReportApp
  */
 angular.module('sapWizardReportApp')
-  .controller('GridCtrl',['$scope','$rootScope','crud','$routeParams','$location','$window','uiGridConstants','uiGridGroupingConstants',
-    function ($scope,$root,$crud, $routeParams,$location,$window,uiGridConstants,uiGridGroupingConstants) {
+  .controller('GridCtrl',['$scope','$rootScope','crud','$routeParams','$location','$window','uiGridConstants','uiGridGroupingConstants','i18nService', 
+    function ($scope,$root,$crud, $routeParams,$location,$window,uiGridConstants,uiGridGroupingConstants,i18nService) {
 
     var key =  $routeParams.key;
     var mandt = '110';
@@ -17,16 +17,35 @@ angular.module('sapWizardReportApp')
     $scope.viewFilter = false;
     $scope.viewReport = false;
     $scope.tam = 500;
+    $scope.langs = i18nService.getAllLangs();
+    $scope.lang = 'es';
 
     $scope.gridOptions = {
       enableFiltering: false,
       showColumnFooter: true,
       enableColumnResizing: true,
       treeRowHeaderAlwaysVisible: false,
+      enableGridMenu: true,
       onRegisterApi: function(gridApi){
         $scope.gridApi = gridApi;
       },
-      columnDefs: []
+      enableSelectAll: true,
+      exporterCsvFilename: 'myFile.csv',
+      exporterPdfDefaultStyle: {fontSize: 9},
+      exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
+      exporterPdfTableHeaderStyle: {fontSize: 10, bold: true},
+      exporterPdfHeader: { text: "Compensar", style: 'headerStyle' },
+      exporterPdfFooter: function ( currentPage, pageCount ) {
+        return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
+      },
+      exporterPdfCustomFormatter: function ( docDefinition ) {
+        docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
+        docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
+        return docDefinition;
+      },
+      exporterPdfOrientation: 'landscape',
+      exporterPdfPageSize: 'LEGAL',
+      exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
     };
 
     $scope.toggleFiltering = function(){
@@ -124,6 +143,10 @@ angular.module('sapWizardReportApp')
 
           if(item.sumby == true){
             properties.aggregationType = uiGridConstants.aggregationTypes.sum
+            properties.footerCellTemplate = '<div class="ui-grid-cell-contents"><b>Total: </b>{{col.getAggregationValue() | number:0 }}</div>'
+          }
+          if(item.datatype.toLowerCase() == 'curr' ){
+            properties.cellFilter = 'number:0'
           }
 
           if(item.groupby == true){

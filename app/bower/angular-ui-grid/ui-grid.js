@@ -11880,15 +11880,15 @@ module.filter('px', function() {
           max: 'max: '
         },
         gridMenu: {
-          columns: 'Columns:',
+          columns: 'Columnas:',
           importerTitle: 'Import file',
-          exporterAllAsCsv: 'Export all data as csv',
-          exporterVisibleAsCsv: 'Export visible data as csv',
-          exporterSelectedAsCsv: 'Export selected data as csv',
-          exporterAllAsPdf: 'Export all data as pdf',
-          exporterVisibleAsPdf: 'Export visible data as pdf',
-          exporterSelectedAsPdf: 'Export selected data as pdf',
-          clearAllFilters: 'Clear all filters'
+          exporterAllAsCsv: 'Exportar todos a csv',
+          exporterVisibleAsCsv: 'Exportar lo visible a csv',
+          exporterSelectedAsCsv: 'Exportar selección a csv',
+          exporterAllAsPdf: 'Exportar todo a pdf',
+          exporterVisibleAsPdf: 'Exportar lo visible a pdf',
+          exporterSelectedAsPdf: 'Exportar selección a pdf',
+          clearAllFilters: 'Elimnar todos los filtros'
         },
         importer: {
           noHeaders: 'Column names were unable to be derived, does the file have a header?',
@@ -12102,14 +12102,14 @@ module.filter('px', function() {
           of: 'of'
         },
         grouping: {
-          group: 'Group',
-          ungroup: 'Ungroup',
-          aggregate_count: 'Agg: Count',
-          aggregate_sum: 'Agg: Sum',
-          aggregate_max: 'Agg: Max',
-          aggregate_min: 'Agg: Min',
-          aggregate_avg: 'Agg: Avg',
-          aggregate_remove: 'Agg: Remove'
+          group: 'Agrupar',
+          ungroup: 'Desagrupar',
+          aggregate_count: 'Agrupar: Contar',
+          aggregate_sum: 'Agrupar: Sumar',
+          aggregate_max: 'Agrupar: Max',
+          aggregate_min: 'Agrupar: Min',
+          aggregate_avg: 'Agrupar: Prom',
+          aggregate_remove: 'Agrupar: Remover'
         },
         validate: {
           error: 'Error:',
@@ -12194,7 +12194,7 @@ module.filter('px', function() {
           group: 'Agrupar',
           ungroup: 'Desagrupar',
           aggregate_count: 'Agr: Cont',
-          aggregate_sum: 'Agr: Sum',
+          aggregate_sum: 'Agr: Suma',
           aggregate_max: 'Agr: Máx',
           aggregate_min: 'Agr: Min',
           aggregate_avg: 'Agr: Prom',
