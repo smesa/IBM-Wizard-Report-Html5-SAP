@@ -15,7 +15,9 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ui.grid'
+    'ui.grid',
+    'ui.grid.resizeColumns',
+    'ui.grid.grouping'
   ])
   .config(function ($routeProvider) {
     $routeProvider

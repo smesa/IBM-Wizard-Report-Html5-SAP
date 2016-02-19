@@ -8,7 +8,7 @@ body {
 }
 
 .col-full{
-  height: 850px;
+  height: 700px;
 }
 
 .box-full{
@@ -100,22 +100,7 @@ body {
   background-color: #386884;
 }
 
-.ui-grid {
-  height: 1px !important;
-}
 
-.ui-grid-row:nth-child(even) .ui-grid-cell {
-    background-color: #d4d4d4;
-}
-
-.ui-grid-row .ui-grid-cell {
-    height: 40px;
-    vertical-align: middle;
-}
-
-.ui-grid-render-container {
-    border: 1px solid rgba(63, 149, 199, 0.61);
-}
 
 input[type="text"].ui-grid-filter-input {
     color: black;

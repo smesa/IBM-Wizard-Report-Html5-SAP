@@ -8,14 +8,31 @@
  * Controller of the sapWizardReportApp
  */
 angular.module('sapWizardReportApp')
-  .controller('GridCtrl',['$scope','$rootScope','crud','$routeParams','$location','$window','uiGridConstants',
-    function ($scope,$root,$crud, $routeParams,$location,$window,uiGridConstants) {
+  .controller('GridCtrl',['$scope','$rootScope','crud','$routeParams','$location','$window','uiGridConstants','uiGridGroupingConstants',
+    function ($scope,$root,$crud, $routeParams,$location,$window,uiGridConstants,uiGridGroupingConstants) {
 
     var key =  $routeParams.key;
     var mandt = '110';
 
     $scope.viewFilter = false;
     $scope.viewReport = false;
+    $scope.tam = 500;
+
+    $scope.gridOptions = {
+      enableFiltering: false,
+      showColumnFooter: true,
+      enableColumnResizing: true,
+      treeRowHeaderAlwaysVisible: false,
+      onRegisterApi: function(gridApi){
+        $scope.gridApi = gridApi;
+      },
+      columnDefs: []
+    };
+
+    $scope.toggleFiltering = function(){
+       $scope.gridOptions.enableFiltering = !$scope.gridOptions.enableFiltering;
+       $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
+    };
 
     $scope.logo = 'https://gestiondesempeno.compensar.com/gestiondesempeno/imagenes/logo_compensar.png';
 
@@ -95,35 +112,29 @@ angular.module('sapWizardReportApp')
     $scope.getDataForms = function(){
       $crud.getDataForms(mandt,key).then(function(resp){
         $scope.viewReport = true;
-        var values = JSON.stringify(resp);
-        var fields = JSON.stringify($scope.fieldsReport);
-        fields = JSON.parse(fields);
 
+        var fields = JSON.parse(JSON.stringify($scope.fieldsReport));
+        var cntGroup = 0;
         angular.forEach(fields,function(item){
           item.fieldname = item.fieldname.toLowerCase();
-          values = values.split(item.fieldname).join(item.description);
-          item.fieldname = item.fieldname.toUpperCase();
-          values = values.split(item.fieldname).join(item.description);
+          var properties = {};
+          properties.field = item.fieldname;
+          properties.displayName = item.description;
+          properties.enableColumnResizing = true;
+
+          if(item.sumby == true){
+            properties.aggregationType = uiGridConstants.aggregationTypes.sum
+          }
+
+          if(item.groupby == true){
+            properties.grouping = { groupPriority: cntGroup }
+            cntGroup = cntGroup + 1;
+          }
+
+          $scope.gridOptions.columnDefs.push(properties)
         })
 
-        var values = JSON.parse(values);
-        $scope.gridOptions.data = values;
+        $scope.gridOptions.data = resp;
       });
     }
-
-    $scope.highlightFilteredHeader = function( row, rowRenderIndex, col, colRenderIndex ) {
-      if( col.filters[0].term ){
-        return 'header-filtered';
-      } else {
-        return '';
-      }
-    };
-
-    $scope.gridOptions = {
-      enableFiltering: true,
-      onRegisterApi: function(gridApi){
-        $scope.gridApi = gridApi;
-      }
-    };
-
   }]);

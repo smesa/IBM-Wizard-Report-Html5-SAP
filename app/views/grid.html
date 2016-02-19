@@ -44,7 +44,18 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-12">
-      <div id="grid1" ui-grid="gridOptions" class="grid"></div>
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title"></h3>
+          <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" ng-click="toggleFiltering()"><i class="fa fa-filter"></i></button>
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div><!-- /.box-tools -->
+        </div><!-- /.box-header -->
+        <div class="box-body">
+          <div id="grid" style="height:{{tam}}px;" ui-grid="gridOptions" class="grid" ui-grid-resize-columns ui-grid-grouping></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
